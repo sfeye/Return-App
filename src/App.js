@@ -7,6 +7,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import RequestScreen from "./components/RequestScreen";
 
 export default function App() {
   // ------- Local State ------- //
@@ -64,8 +65,8 @@ export default function App() {
               </TouchableOpacity>
             ),
           }}
-          // initialParams={{ user: authUser.email }}
         />
+        <HomeStack.Screen name="RequestScreen" component={RequestScreen} />
       </HomeStack.Navigator>
     </NavigationContainer>
   ) : (
