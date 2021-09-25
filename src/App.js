@@ -41,7 +41,6 @@ export default function App() {
   const HomeStack = createStackNavigator();
   // --------------------------- //
 
-
   return (
     <Provider store={Store}>
       {true ? (
@@ -70,10 +69,9 @@ export default function App() {
                   </TouchableOpacity>
                 ),
               }}
-              // initialParams={{ user: authUser.email }}
+              initialParams={{ email: "email" }}
             />
-        <HomeStack.Screen name="RequestScreen" component={RequestScreen} />
-
+            <HomeStack.Screen name="RequestScreen" component={RequestScreen} />
           </HomeStack.Navigator>
         </NavigationContainer>
       ) : (
