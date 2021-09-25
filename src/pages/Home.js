@@ -1,14 +1,22 @@
 import React, { useState, useEffect } from "react";
+import firebase from "firebase";
 import { useDispatch, useSelector } from "react-redux";
 import {
   initializeUser,
   updateUserLocation,
 } from "../store/actions/userActions";
-import firebase from "firebase";
-import { View, Text, StyleSheet, Keyboard, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Keyboard,
+  ScrollView,
+  Dimensions,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Button, Input, Icon } from "react-native-elements";
 import * as Location from "expo-location";
+import MapView, { Marker } from "react-native-maps";
 
 const Home = ({ route, navigation }) => {
   // --------- Redux ----------- //
@@ -18,12 +26,7 @@ const Home = ({ route, navigation }) => {
 
   // ------- Local State ------- //
   const [errorMsg, setErrorMsg] = useState(null);
-  const [region, setRegion] = useState({
-    latitude: userLocation.coords.latitude,
-    longitude: userLocation.coords.longitude,
-    latitudeDelta: 0.0922,
-    longitudeDelta: 0.0421,
-  });
+  const [region, setRegion] = useState(null);
   // --------------------------- //
 
   useEffect(() => {
@@ -47,28 +50,48 @@ const Home = ({ route, navigation }) => {
       let location = await Location.getCurrentPositionAsync({});
       dispatch(updateUserLocation(location));
       setRegion({
-        latitude: userLocation.coords.latitude,
-        longitude: userLocation.coords.longitude,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+        latitudeDelta: 0.01,
+        longitudeDelta: 0.01,
       });
     })();
   }, []);
 
   return (
     <View>
-      <Button
-        icon={
-          <Ionicons
-            name="add-circle"
-            size={20}
-            color={"white"}
-            style={{ marginRight: 5 }}
-          />
-        }
-        title="New Request ? "
-        onPress={() => navigation.push("RequestScreen")}
-      />
+      <View>
+        <Button
+          icon={
+            <Ionicons
+              name="add-circle"
+              size={20}
+              color={"white"}
+              style={{ marginRight: 5 }}
+            />
+          }
+          title="New Request ? "
+          onPress={() => navigation.push("RequestScreen")}
+        />
+      </View>
+      <View>
+        {region ? (
+          <MapView
+            style={{ height: 300, width: Dimensions.get("window").width }}
+            region={region}
+            onRegionChange={setRegion}
+          >
+            <Marker
+              coordinate={{
+                latitude: region.latitude,
+                longitude: region.longitude,
+              }}
+            />
+          </MapView>
+        ) : (
+          <React.Fragment />
+        )}
+      </View>
     </View>
   );
 };
