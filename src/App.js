@@ -26,7 +26,7 @@ export default function App() {
 
   // ---- Authenticate User ---- //
   useEffect(() => {
-    const unsubscribe = firebase.auth().onAuthStateChanged(user => {
+    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
       user ? setUser(user) : setUser(null);
     });
 
@@ -43,7 +43,7 @@ export default function App() {
 
   return (
     <Provider store={Store}>
-      {authUser ? (
+      {true ? (
         <NavigationContainer>
           <HomeStack.Navigator>
             <HomeStack.Screen
@@ -103,6 +103,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "center"
-  }
+    justifyContent: "center",
+  },
 });
