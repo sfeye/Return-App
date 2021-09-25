@@ -26,7 +26,7 @@ export default function App() {
 
   // ---- Authenticate User ---- //
   useEffect(() => {
-    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+    const unsubscribe = firebase.auth().onAuthStateChanged(user => {
       user ? setUser(user) : setUser(null);
     });
 
@@ -41,10 +41,9 @@ export default function App() {
   const HomeStack = createStackNavigator();
   // --------------------------- //
 
-
   return (
     <Provider store={Store}>
-      {true ? (
+      {authUser ? (
         <NavigationContainer>
           <HomeStack.Navigator>
             <HomeStack.Screen
@@ -70,10 +69,9 @@ export default function App() {
                   </TouchableOpacity>
                 ),
               }}
-              // initialParams={{ user: authUser.email }}
+              initialParams={{ email: "email" }}
             />
-        <HomeStack.Screen name="RequestScreen" component={RequestScreen} />
-
+            <HomeStack.Screen name="RequestScreen" component={RequestScreen} />
           </HomeStack.Navigator>
         </NavigationContainer>
       ) : (
@@ -105,6 +103,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "center",
-  },
+    justifyContent: "center"
+  }
 });
