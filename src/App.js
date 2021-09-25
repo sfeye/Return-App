@@ -23,7 +23,7 @@ export default function App() {
 
   // ---- Authenticate User ---- //
   useEffect(() => {
-    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+    const unsubscribe = firebase.auth().onAuthStateChanged(user => {
       user ? setUser(user) : setUser(null);
     });
 
@@ -38,7 +38,7 @@ export default function App() {
   const HomeStack = createStackNavigator();
   // --------------------------- //
 
-  return true ? (
+  return authUser ? (
     <NavigationContainer>
       <HomeStack.Navigator>
         <HomeStack.Screen
@@ -49,11 +49,11 @@ export default function App() {
             headerTitleAlign: "left",
             headerTitleStyle: {
               fontSize: 15,
-              color: "white",
+              color: "white"
             },
             headerTintColor: "white",
             headerStyle: {
-              backgroundColor: "blue",
+              backgroundColor: "blue"
             },
             headerRight: () => (
               <TouchableOpacity
@@ -62,7 +62,7 @@ export default function App() {
               >
                 <Ionicons name={"power"} size={20} color={"white"} />
               </TouchableOpacity>
-            ),
+            )
           }}
           // initialParams={{ user: authUser.email }}
         />
@@ -77,12 +77,12 @@ export default function App() {
           options={{
             headerTitleStyle: {
               color: "white",
-              textAlign: "center",
+              textAlign: "center"
             },
             headerTintColor: "white",
             headerStyle: {
-              backgroundColor: "blue",
-            },
+              backgroundColor: "blue"
+            }
           }}
         />
       </AuthStack.Navigator>
@@ -95,6 +95,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "center",
-  },
+    justifyContent: "center"
+  }
 });
