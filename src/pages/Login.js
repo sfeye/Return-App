@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import firebase from "firebase";
 
-const Login = () => {
+const Login = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -56,6 +56,10 @@ const Login = () => {
       >
         <Text style={styles.submitButtonText}> Submit </Text>
       </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => navigation.push("ForgotPassword")}>
+        <Text style={styles.forgotPassword}>Forgot Password?</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -80,5 +84,9 @@ const styles = StyleSheet.create({
   },
   submitButtonText: {
     color: "white"
+  },
+  forgotPassword: {
+    justifyContent: "center",
+    alignItems: "center"
   }
 });

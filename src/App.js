@@ -10,6 +10,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import RequestScreen from "./components/RequestScreen";
+import ForgotPassword from "./components/ForgotPassword";
 
 export default function App() {
   // ------- Local State ------- //
@@ -54,11 +55,11 @@ export default function App() {
                 headerTitleAlign: "left",
                 headerTitleStyle: {
                   fontSize: 15,
-                  color: "white",
+                  color: "white"
                 },
                 headerTintColor: "white",
                 headerStyle: {
-                  backgroundColor: "blue",
+                  backgroundColor: "blue"
                 },
                 headerRight: () => (
                   <TouchableOpacity
@@ -67,7 +68,7 @@ export default function App() {
                   >
                     <Ionicons name={"power"} size={20} color={"white"} />
                   </TouchableOpacity>
-                ),
+                )
               }}
               initialParams={{ email: "email" }}
             />
@@ -83,12 +84,26 @@ export default function App() {
               options={{
                 headerTitleStyle: {
                   color: "white",
-                  textAlign: "center",
+                  textAlign: "center"
                 },
                 headerTintColor: "white",
                 headerStyle: {
-                  backgroundColor: "blue",
+                  backgroundColor: "blue"
+                }
+              }}
+            />
+            <AuthStack.Screen
+              name="ForgotPassword"
+              component={ForgotPassword}
+              options={{
+                headerTitleStyle: {
+                  color: "white",
+                  textAlign: "center"
                 },
+                headerTintColor: "white",
+                headerStyle: {
+                  backgroundColor: "blue"
+                }
               }}
             />
           </AuthStack.Navigator>
