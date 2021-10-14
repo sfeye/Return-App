@@ -2,21 +2,20 @@ import React, { useState } from "react";
 import {
   View,
   Text,
-  TouchableOpacity,
   TextInput,
-  StyleSheet,
-  Alert
+  TouchableOpacity,
+  StyleSheet
 } from "react-native";
 import firebase from "firebase";
 
-const Login = ({ navigation }) => {
+const NewUser = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  login = (email, password) => {
+  const adduser = (email, password) => {
     firebase
       .auth()
-      .signInWithEmailAndPassword(email, password)
+      .createUserWithEmailAndPassword(email, password)
       .then(res => {
         // Signed in
         console.log(res);
@@ -28,7 +27,7 @@ const Login = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View>
       <TextInput
         style={styles.input}
         underlineColorAndroid="transparent"
@@ -52,28 +51,15 @@ const Login = ({ navigation }) => {
 
       <TouchableOpacity
         style={styles.submitButton}
-        onPress={() => login(email, password)}
+        onPress={() => adduser(email, password)}
       >
         <Text style={styles.submitButtonText}> Submit </Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={() => navigation.push("ForgotPassword")}>
-        <Text style={styles.forgotPassword}>Forgot Password?</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={() => navigation.push("NewUser")}>
-        <Text style={styles.newUser}>Dont have an account? Sign Up</Text>
       </TouchableOpacity>
     </View>
   );
 };
 
-export default Login;
-
 const styles = StyleSheet.create({
-  container: {
-    paddingTop: 23
-  },
   input: {
     margin: 15,
     height: 50,
@@ -88,13 +74,7 @@ const styles = StyleSheet.create({
   },
   submitButtonText: {
     color: "white"
-  },
-  forgotPassword: {
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  newUser: {
-    justifyContent: "center",
-    alignItems: "center"
   }
 });
+
+export default NewUser;
