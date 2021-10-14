@@ -15,6 +15,7 @@ import Previous from "./pages/Previous";
 import Wallet from "./pages/Wallet";
 import RequestScreen from "./components/RequestScreen";
 import ForgotPassword from "./components/ForgotPassword";
+import NewUser from "./components/NewUser";
 
 export default function App() {
   // ------- Local State ------- //
@@ -31,7 +32,7 @@ export default function App() {
 
   // ---- Authenticate User ---- //
   useEffect(() => {
-    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+    const unsubscribe = firebase.auth().onAuthStateChanged(user => {
       user ? setUser(user) : setUser(null);
     });
 
@@ -79,7 +80,7 @@ export default function App() {
 
   return (
     <Provider store={Store}>
-      {true ? (
+      {authUser ? (
         <NavigationContainer>
           <HomeStack.Navigator>
             {HomeStackTemplate(
@@ -141,6 +142,20 @@ export default function App() {
                 },
               }}
             />
+            <AuthStack.Screen
+              name="NewUser"
+              component={NewUser}
+              options={{
+                headerTitleStyle: {
+                  color: "white",
+                  textAlign: "center"
+                },
+                headerTintColor: "white",
+                headerStyle: {
+                  backgroundColor: "blue"
+                }
+              }}
+            />
           </AuthStack.Navigator>
         </NavigationContainer>
       )}
@@ -153,6 +168,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "center",
-  },
+    justifyContent: "center"
+  }
 });

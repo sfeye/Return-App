@@ -5,6 +5,7 @@ import {
   initializeUser,
   updateUserLocation,
 } from "../store/actions/userActions";
+import { updateJob } from "../store/actions/jobActions";
 import {
   View,
   Text,
@@ -17,11 +18,14 @@ import { Ionicons } from "@expo/vector-icons";
 import { Button, Input, Icon } from "react-native-elements";
 import * as Location from "expo-location";
 import MapView, { Marker } from "react-native-maps";
+import JobStatus from "../components/JobStatus";
 
 const Home = ({ route, navigation }) => {
   // --------- Redux ----------- //
   const dispatch = useDispatch();
   const userLocation = useSelector((state) => state.userReducer.location);
+  const job = useSelector((state) => state.jobReducer);
+
   // --------------------------- //
 
   // ------- Local State ------- //
@@ -37,6 +41,25 @@ const Home = ({ route, navigation }) => {
       .onSnapshot((snapshot) => {
         snapshot.docs.map((doc) =>
           dispatch(initializeUser(doc.id, doc.data()))
+        );
+      });
+
+    firebase
+      .firestore()
+      .collection("jobs")
+      .where("email", "==", route.params.email)
+      .where("activeCd", "==", "Y")
+      .onSnapshot((snapshot) => {
+        snapshot.docs.map((doc) =>
+          dispatch(
+            updateJob(
+              doc.data().accepted,
+              doc.data().completed,
+              doc.data().driverName,
+              doc.data().driverLocation,
+              doc.data().driverPhone
+            )
+          )
         );
       });
 
@@ -90,6 +113,21 @@ const Home = ({ route, navigation }) => {
           </MapView>
         ) : (
           <React.Fragment />
+        )}
+      </View>
+      <View style={{ paddingTop: 50 }}>
+        {job.activeCd === "Y" ? (
+          <JobStatus
+            dropOff={job.dropOff}
+            pickup={job.pickup}
+            accepted={job.accepted}
+            completed={job.completed}
+            driverName={job.driverName}
+            driverLocation={job.driverLocation}
+            driverPhone={job.driverPhone}
+          />
+        ) : (
+          React.Fragment
         )}
       </View>
     </View>

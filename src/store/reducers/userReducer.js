@@ -2,8 +2,12 @@ import types from "../constants/action-types";
 
 const initialState = {
   id: "",
-  user: "",
-  location: "",
+  user: {
+    name: "",
+    phone: "",
+    email: "",
+  },
+  location: {},
 };
 
 function userReducer(state = initialState, action) {
