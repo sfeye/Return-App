@@ -7,6 +7,7 @@ import { StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Settings from "./pages/Settings";
@@ -42,7 +43,7 @@ export default function App() {
 
   // ------ Create Stacks ------ //
   const AuthStack = createStackNavigator();
-  const HomeStack = createStackNavigator();
+  const HomeStack = createDrawerNavigator();
   // --------------------------- //
 
   // -------- Templates -------- //
