@@ -8,22 +8,29 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
 } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import { initializeJob } from "../store/actions/jobActions";
 import { Ionicons } from "@expo/vector-icons";
 import { Button, Input, Icon } from "react-native-elements";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import firebase from "firebase";
 
 const RequestScreen = () => {
-  const [fromLocation, setFromLoction] = useState(null);
+  const dispatch = useDispatch();
+
+  const [fromLocation, setFromLocation] = useState("");
   const [toLocation, setToLocation] = useState("");
   const [requestType, setRequestType] = useState("");
+  const [activeCd, setActiveCd] = useState("Y");
   const [date, setDate] = useState(new Date());
   const [time, setTime] = useState(new Date());
   const [show, setShow] = useState(false);
   const [mode, setMode] = useState("date");
 
+  const user = useSelector((state) => state.userReducer.user);
+
   const resetStateVars = () => {
-    setFromLocation(null);
+    setFromLocation("");
     setToLocation("");
     setRequestType("");
     setDate(new Date());
@@ -69,9 +76,29 @@ const RequestScreen = () => {
         dropOff: toLocation,
         pickup: fromLocation,
         time: dateTimeProvided,
+        accepted: false,
+        completed: false,
+        driverLocation: "",
+        driverName: "",
+        driverPhone: "",
+        userName: user.name,
+        userPhone: user.phone,
+        email: user.email,
+        activeCd: "Y",
       })
-      .then(() => {
+      .then((ref) => {
         alert("Request Created!");
+        dispatch(
+          initializeJob(
+            ref.id,
+            toLocation,
+            fromLocation,
+            dateTimeProvided,
+            user.name,
+            user.phone,
+            activeCd
+          )
+        );
         resetStateVars();
       })
       .catch((error) => {
@@ -84,7 +111,7 @@ const RequestScreen = () => {
       <View>
         <View>
           <Input
-            onChangeText={setFromLoction}
+            onChangeText={setFromLocation}
             value={fromLocation}
             placeholder="From ?"
           />

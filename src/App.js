@@ -69,7 +69,7 @@ export default function App() {
                   </TouchableOpacity>
                 ),
               }}
-              initialParams={{ email: "email" }}
+              initialParams={{ email: "ljhorosz@gmail.com" }}
             />
             <HomeStack.Screen name="RequestScreen" component={RequestScreen} />
           </HomeStack.Navigator>
