@@ -94,7 +94,7 @@ const Home = ({ route, navigation }) => {
             />
           }
           title="New Request ? "
-          onPress={() => navigation.push("RequestScreen")}
+          onPress={() => navigation.navigate("RequestScreen")}
         />
       </View>
       <View>
