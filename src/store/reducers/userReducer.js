@@ -3,11 +3,15 @@ import types from "../constants/action-types";
 const initialState = {
   id: "",
   user: {
-    name: "",
-    phone: "",
+    acceptedterms: false,
+    address: "",
+    billinginfo: "",
     email: "",
+    isValid: false,
+    name: "",
+    phone: ""
   },
-  location: {},
+  location: {}
 };
 
 function userReducer(state = initialState, action) {
@@ -16,12 +20,12 @@ function userReducer(state = initialState, action) {
       return {
         ...state,
         id: action.payload.id,
-        user: action.payload.user,
+        user: action.payload.user
       };
     case types.UPDATE_USER_LOCATION:
       return {
         ...state,
-        location: action.payload.location,
+        location: action.payload.location
       };
     default:
       return state;
