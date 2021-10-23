@@ -32,7 +32,7 @@ export default function App() {
 
   // ---- Authenticate User ---- //
   useEffect(() => {
-    const unsubscribe = firebase.auth().onAuthStateChanged(user => {
+    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
       user ? setUser(user) : setUser(null);
     });
 
@@ -76,6 +76,25 @@ export default function App() {
       />
     );
   }
+
+  function AuthStackTemplate(name, component) {
+    return (
+      <AuthStack.Screen
+        name={name}
+        component={component}
+        options={{
+          headerTitleStyle: {
+            color: "white",
+            textAlign: "center",
+          },
+          headerTintColor: "white",
+          headerStyle: {
+            backgroundColor: "blue",
+          },
+        }}
+      />
+    );
+  }
   // --------------------------- //
 
   return (
@@ -114,48 +133,12 @@ export default function App() {
       ) : (
         <NavigationContainer>
           <AuthStack.Navigator>
-            <AuthStack.Screen
-              name="Login"
-              component={Login}
-              options={{
-                headerTitleStyle: {
-                  color: "white",
-                  textAlign: "center",
-                },
-                headerTintColor: "white",
-                headerStyle: {
-                  backgroundColor: "blue",
-                },
-              }}
-            />
-            <AuthStack.Screen
-              name="ForgotPassword"
-              component={ForgotPassword}
-              options={{
-                headerTitleStyle: {
-                  color: "white",
-                  textAlign: "center",
-                },
-                headerTintColor: "white",
-                headerStyle: {
-                  backgroundColor: "blue",
-                },
-              }}
-            />
-            <AuthStack.Screen
-              name="NewUser"
-              component={NewUser}
-              options={{
-                headerTitleStyle: {
-                  color: "white",
-                  textAlign: "center"
-                },
-                headerTintColor: "white",
-                headerStyle: {
-                  backgroundColor: "blue"
-                }
-              }}
-            />
+            {AuthStackTemplate((name = "Login"), (component = Login))}
+            {AuthStackTemplate(
+              (name = "ForgotPassword"),
+              (component = ForgotPassword)
+            )}
+            {AuthStackTemplate((name = "NewUser"), (component = NewUser))}
           </AuthStack.Navigator>
         </NavigationContainer>
       )}
@@ -168,6 +151,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "center"
-  }
+    justifyContent: "center",
+  },
 });
