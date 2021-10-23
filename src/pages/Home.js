@@ -3,7 +3,7 @@ import firebase from "firebase";
 import { useDispatch, useSelector } from "react-redux";
 import {
   initializeUser,
-  updateUserLocation,
+  updateUserLocation
 } from "../store/actions/userActions";
 import { updateJob } from "../store/actions/jobActions";
 import {
@@ -12,7 +12,7 @@ import {
   StyleSheet,
   Keyboard,
   ScrollView,
-  Dimensions,
+  Dimensions
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Button, Input, Icon } from "react-native-elements";
@@ -23,8 +23,8 @@ import JobStatus from "../components/JobStatus";
 const Home = ({ route, navigation }) => {
   // --------- Redux ----------- //
   const dispatch = useDispatch();
-  const userLocation = useSelector((state) => state.userReducer.location);
-  const job = useSelector((state) => state.jobReducer);
+  const userLocation = useSelector(state => state.userReducer.location);
+  const job = useSelector(state => state.jobReducer);
 
   // --------------------------- //
 
@@ -36,14 +36,13 @@ const Home = ({ route, navigation }) => {
   // --------------------------- //
 
   useEffect(() => {
+    console.log(route.params.email);
     firebase
       .firestore()
       .collection("users")
       .where("email", "==", route.params.email)
-      .onSnapshot((snapshot) => {
-        snapshot.docs.map((doc) =>
-          dispatch(initializeUser(doc.id, doc.data()))
-        );
+      .onSnapshot(snapshot => {
+        snapshot.docs.map(doc => dispatch(initializeUser(doc.id, doc.data())));
       });
 
     firebase
@@ -51,8 +50,8 @@ const Home = ({ route, navigation }) => {
       .collection("jobs")
       .where("email", "==", route.params.email)
       .where("activeCd", "==", "Y")
-      .onSnapshot((snapshot) => {
-        snapshot.docs.map((doc) =>
+      .onSnapshot(snapshot => {
+        snapshot.docs.map(doc =>
           dispatch(
             updateJob(
               doc.data().accepted,
@@ -78,7 +77,7 @@ const Home = ({ route, navigation }) => {
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
         latitudeDelta: 0.01,
-        longitudeDelta: 0.01,
+        longitudeDelta: 0.01
       });
       setSelfMarker({
         latitude: location.coords.latitude,
