@@ -24,6 +24,24 @@ const NewUser = ({ navigation }) => {
       .catch(error => {
         alert(error);
       });
+
+    firebase
+      .firestore()
+      .collection("users")
+      .add({
+        acceptedterms: true,
+        address: "",
+        billinginfo: "",
+        isValid: true,
+        name: "",
+        phone: ""
+      })
+      .then(() => {
+        alert("Success");
+      })
+      .catch(error => {
+        alert(error);
+      });
   };
 
   return (

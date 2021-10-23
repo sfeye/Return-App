@@ -57,11 +57,11 @@ export default function App() {
           title: title,
           headerTitleStyle: {
             fontSize: 15,
-            color: "white",
+            color: "white"
           },
           headerTintColor: "white",
           headerStyle: {
-            backgroundColor: "blue",
+            backgroundColor: "blue"
           },
           headerRight: () => (
             <TouchableOpacity
@@ -70,7 +70,7 @@ export default function App() {
             >
               <Ionicons name={"power"} size={20} color={"white"} />
             </TouchableOpacity>
-          ),
+          )
         }}
         initialParams={initialParams}
       />
@@ -87,7 +87,7 @@ export default function App() {
               (name = "HomeStack"),
               (component = Home),
               (title = "Welcome tester"),
-              (initialParams = { email: "email" })
+              (initialParams = { email: authUser.email })
             )}
             {HomeStackTemplate(
               (name = "RequestScreen"),
@@ -120,12 +120,12 @@ export default function App() {
               options={{
                 headerTitleStyle: {
                   color: "white",
-                  textAlign: "center",
+                  textAlign: "center"
                 },
                 headerTintColor: "white",
                 headerStyle: {
-                  backgroundColor: "blue",
-                },
+                  backgroundColor: "blue"
+                }
               }}
             />
             <AuthStack.Screen
@@ -134,12 +134,12 @@ export default function App() {
               options={{
                 headerTitleStyle: {
                   color: "white",
-                  textAlign: "center",
+                  textAlign: "center"
                 },
                 headerTintColor: "white",
                 headerStyle: {
-                  backgroundColor: "blue",
-                },
+                  backgroundColor: "blue"
+                }
               }}
             />
             <AuthStack.Screen
