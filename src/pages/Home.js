@@ -31,6 +31,8 @@ const Home = ({ route, navigation }) => {
   // ------- Local State ------- //
   const [errorMsg, setErrorMsg] = useState(null);
   const [region, setRegion] = useState(null);
+  const [selfMarker, setSelfMarker] = useState(null);
+  const [driverMarker, setDriverMarker] = useState(null);
   // --------------------------- //
 
   useEffect(() => {
@@ -77,6 +79,10 @@ const Home = ({ route, navigation }) => {
         latitudeDelta: 0.01,
         longitudeDelta: 0.01
       });
+      setSelfMarker({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      });
     })();
   }, []);
 
@@ -103,12 +109,26 @@ const Home = ({ route, navigation }) => {
             region={region}
             onRegionChange={setRegion}
           >
-            <Marker
-              coordinate={{
-                latitude: region.latitude,
-                longitude: region.longitude
-              }}
-            />
+            {selfMarker ? (
+              <Marker
+                coordinate={{
+                  latitude: selfMarker.latitude,
+                  longitude: selfMarker.longitude,
+                }}
+              />
+            ) : (
+              <React.Fragment />
+            )}
+            {driverMarker ? (
+              <Marker
+                coordinate={{
+                  latitude: driverMarker.latitude,
+                  longitude: driverMarker.longitude,
+                }}
+              />
+            ) : (
+              <React.Fragment />
+            )}
           </MapView>
         ) : (
           <React.Fragment />
