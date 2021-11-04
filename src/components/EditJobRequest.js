@@ -1,54 +1,48 @@
-import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Keyboard,
-  Platform,
-  ScrollView,
-  TouchableWithoutFeedback,
-  Dimensions,
-} from "react-native";
+import React, { useState, useRef, useEffect } from "react";
+import { View, Text, ScrollView, StyleSheet } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { initializeJob } from "../store/actions/jobActions";
-import { Ionicons } from "@expo/vector-icons";
-import { Button, Input, Icon } from "react-native-elements";
-import DateTimePicker from "@react-native-community/datetimepicker";
+import { updateJobOnUpdate } from "../store/actions/jobActions";
 import firebase from "firebase";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-//import {useNavigation} from "@react-navigation/native";
+import { Button, Input, Icon } from "react-native-elements";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 const GOOGLE_PLACES_API_KEY = "AIzaSyC5s7Hadc3VByJRQedchWDTC__U-Z9G2-w";
 
-const RequestScreen = (route, navigation) => {
+const EditJobRequest = () => {
+  const dropOffRef = useRef();
+  const pickupRef = useRef();
   const dispatch = useDispatch();
 
-  const [fromLocation, setFromLocation] = useState(null);
-  const [toLocation, setToLocation] = useState(null);
-  const [requestType, setRequestType] = useState("");
-  const [activeCd, setActiveCd] = useState("Y");
-  const [date, setDate] = useState(new Date());
-  const [time, setTime] = useState(new Date());
+  const job = useSelector((state) => state.jobReducer);
+
+  const [requestType, setRequestType] = useState(job.task);
+  const [fromLocation, setFromLocation] = useState({
+    latitude: job.pickup.latitude,
+    longitude: job.pickup.longitude,
+    address: job.pickup.address,
+  });
+  const [toLocation, setToLocation] = useState({
+    latitude: job.dropOff.latitude,
+    longitude: job.dropOff.latitude,
+    address: job.dropOff.address,
+  });
+  const [editDate, setEditDate] = useState(new Date(job.time));
+  const [editTime, setEditTime] = useState(new Date(job.time));
   const [show, setShow] = useState(false);
   const [mode, setMode] = useState("date");
 
-  const user = useSelector((state) => state.userReducer.user);
-
-  const resetStateVars = () => {
-    setFromLocation(null);
-    setToLocation(null);
-    setRequestType("");
-    setDate(new Date());
-    setTime(new Date());
-    setShow(false);
-    setMode("date");
-  };
+  useEffect(() => {
+    dropOffRef.current.setAddressText(toLocation.address);
+    pickupRef.current.setAddressText(fromLocation.address);
+  }, []);
 
   const onChangeDate = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
+    const currentDate = selectedDate || editDate;
     setShow(Platform.OS === "ios");
-    mode === "date" ? setDate(currentDate) : setTime(currentDate);
+    mode === "date" ? setEditDate(currentDate) : setEditTime(currentDate);
   };
+
   //show mode for date and time
   const showMode = (currentMode) => {
     setShow(true);
@@ -63,54 +57,41 @@ const RequestScreen = (route, navigation) => {
     showMode("time");
   };
 
-  const createNewJobRequest = () => {
+  const updateJobRequest = () => {
     const dateTimeProvided = new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
-      time.getHours(),
-      time.getMinutes(),
-      time.getSeconds(),
-      time.getMilliseconds()
+      editDate.getFullYear(),
+      editDate.getMonth(),
+      editDate.getDate(),
+      editTime.getHours(),
+      editTime.getMinutes(),
+      editTime.getSeconds(),
+      editTime.getMilliseconds()
     );
 
     firebase
       .firestore()
       .collection("jobs")
-      .add({
+      .doc(job.id)
+      .update({
         dropOffLatitude: toLocation.latitude,
         dropOffLongitude: toLocation.longitude,
+        dropOffAddress: toLocation.address,
         pickupLatitude: fromLocation.latitude,
         pickupLongitude: fromLocation.longitude,
-        dropOffAddress: toLocation.address,
         pickupAddress: fromLocation.address,
-        time: dateTimeProvided,
-        accepted: false,
-        completed: false,
-        driverLocation: "",
-        driverName: "",
-        driverPhone: "",
-        userName: user.name,
-        userPhone: user.phone,
-        email: user.email,
-        activeCd: "Y",
         task: requestType,
+        time: dateTimeProvided,
       })
-      .then((ref) => {
-        alert("Request Created!");
+      .then(() => {
+        alert("Request Updated");
         dispatch(
-          initializeJob(
-            ref.id,
+          updateJobOnUpdate(
             toLocation,
             fromLocation,
             dateTimeProvided,
-            user.name,
-            user.phone,
-            activeCd,
             requestType
           )
         );
-        resetStateVars();
       })
       .catch((error) => {
         alert(error);
@@ -123,6 +104,7 @@ const RequestScreen = (route, navigation) => {
         <GooglePlacesAutocomplete
           placeholder="From"
           minLength={2}
+          ref={pickupRef}
           autoFocus={true}
           returnKeyType={"search"}
           keyboardAppearance={"light"}
@@ -186,6 +168,7 @@ const RequestScreen = (route, navigation) => {
         <GooglePlacesAutocomplete
           placeholder="To"
           minLength={2}
+          ref={dropOffRef}
           autoFocus={false}
           returnKeyType={"search"}
           keyboardAppearance={"light"}
@@ -201,7 +184,7 @@ const RequestScreen = (route, navigation) => {
               address: details.formatted_address,
             });
           }}
-          getDefaultValue={() => "123 Main St New York, NY 111234"}
+          getDefaultValue={() => ""}
           query={{
             key: GOOGLE_PLACES_API_KEY,
             language: "en",
@@ -260,7 +243,7 @@ const RequestScreen = (route, navigation) => {
           {show && (
             <DateTimePicker
               testID="datePicker"
-              value={mode === "date" ? date : time}
+              value={mode === "date" ? editDate : editTime}
               mode={mode}
               is24hour={true}
               display="default"
@@ -270,7 +253,12 @@ const RequestScreen = (route, navigation) => {
         </View>
       </View>
       <View>
-        <Button title="Submit" raised onPress={() => createNewJobRequest()} />
+        <Button
+          title="Update"
+          raised
+          onPress={() => updateJobRequest()}
+          disabled={job.accepted == true ? true : false}
+        />
       </View>
     </ScrollView>
   );
@@ -285,4 +273,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RequestScreen;
+export default EditJobRequest;

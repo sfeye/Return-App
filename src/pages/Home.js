@@ -13,6 +13,7 @@ import {
   Keyboard,
   ScrollView,
   Dimensions,
+  ActivityIndicator,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Button, Input, Icon } from "react-native-elements";
@@ -109,10 +110,31 @@ const Home = ({ route, navigation }) => {
                 latitude: region.latitude,
                 longitude: region.longitude,
               }}
+              pinColor="red"
             />
+            {job.activeCd === "Y" ? (
+              <>
+                <Marker
+                  coordinate={{
+                    latitude: job.pickup.latitude,
+                    longitude: job.pickup.longitude,
+                  }}
+                  pinColor="black"
+                ></Marker>
+                <Marker
+                  coordinate={{
+                    latitude: job.dropOff.latitude,
+                    longitude: job.dropOff.longitude,
+                  }}
+                  pinColor="green"
+                ></Marker>
+              </>
+            ) : (
+              React.Fragment
+            )}
           </MapView>
         ) : (
-          <React.Fragment />
+          <ActivityIndicator color="black" size="large" />
         )}
       </View>
       <View style={{ paddingTop: 50 }}>
@@ -125,11 +147,25 @@ const Home = ({ route, navigation }) => {
             driverName={job.driverName}
             driverLocation={job.driverLocation}
             driverPhone={job.driverPhone}
+            time={job.time}
           />
         ) : (
           React.Fragment
         )}
       </View>
+      {job.activeCd === "Y" ? (
+        <View>
+          <Button
+            transparent
+            title="Edit Request"
+            titleStyle={{ fontSize: 15, fontWeight: "600" }}
+            onPress={() => navigation.navigate("EditJobRequest")}
+            disabled={job.accepted ? true : false}
+          />
+        </View>
+      ) : (
+        React.Fragment
+      )}
     </View>
   );
 };

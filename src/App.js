@@ -16,6 +16,7 @@ import Wallet from "./pages/Wallet";
 import RequestScreen from "./components/RequestScreen";
 import ForgotPassword from "./components/ForgotPassword";
 import NewUser from "./components/NewUser";
+import EditJobRequest from "./components/EditJobRequest";
 
 export default function App() {
   // ------- Local State ------- //
@@ -32,7 +33,7 @@ export default function App() {
 
   // ---- Authenticate User ---- //
   useEffect(() => {
-    const unsubscribe = firebase.auth().onAuthStateChanged(user => {
+    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
       user ? setUser(user) : setUser(null);
     });
 
@@ -109,6 +110,11 @@ export default function App() {
               (component = Previous),
               (title = "Previous Jobs")
             )}
+            {HomeStackTemplate(
+              (name = "EditJobRequest"),
+              (component = EditJobRequest),
+              (title = "Update Request")
+            )}
           </HomeStack.Navigator>
         </NavigationContainer>
       ) : (
@@ -148,12 +154,12 @@ export default function App() {
               options={{
                 headerTitleStyle: {
                   color: "white",
-                  textAlign: "center"
+                  textAlign: "center",
                 },
                 headerTintColor: "white",
                 headerStyle: {
-                  backgroundColor: "blue"
-                }
+                  backgroundColor: "blue",
+                },
               }}
             />
           </AuthStack.Navigator>
@@ -168,6 +174,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
-    justifyContent: "center"
-  }
+    justifyContent: "center",
+  },
 });

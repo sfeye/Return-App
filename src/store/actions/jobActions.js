@@ -7,7 +7,8 @@ export const initializeJob = (
   time,
   userName,
   userPhone,
-  activeCd
+  activeCd,
+  task
 ) => ({
   type: types.INITIALIZE_JOB_STATUS,
   payload: {
@@ -18,6 +19,7 @@ export const initializeJob = (
     userName: userName,
     userPhone: userPhone,
     activeCd: activeCd,
+    task: task,
   },
 });
 
@@ -35,6 +37,16 @@ export const updateJob = (
     driverName: driverName,
     driverLocation: driverLocation,
     driverPhone: driverPhone,
+  },
+});
+
+export const updateJobOnUpdate = (dropOff, pickup, time, task) => ({
+  type: types.UPDATE_JOB_ON_UPDATE,
+  payload: {
+    dropOff: dropOff,
+    pickup: pickup,
+    time: time,
+    task: task,
   },
 });
 
