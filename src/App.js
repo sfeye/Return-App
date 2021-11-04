@@ -16,6 +16,7 @@ import Wallet from "./pages/Wallet";
 import RequestScreen from "./components/RequestScreen";
 import ForgotPassword from "./components/ForgotPassword";
 import NewUser from "./components/NewUser";
+import EditJobRequest from "./components/EditJobRequest";
 
 export default function App() {
   // ------- Local State ------- //
@@ -128,11 +129,17 @@ export default function App() {
               (component = Previous),
               (title = "Previous Jobs")
             )}
+            {HomeStackTemplate(
+              (name = "EditJobRequest"),
+              (component = EditJobRequest),
+              (title = "Update Request")
+            )}
           </HomeStack.Navigator>
         </NavigationContainer>
       ) : (
         <NavigationContainer>
           <AuthStack.Navigator>
+
             {AuthStackTemplate((name = "Login"), (component = Login))}
             {AuthStackTemplate(
               (name = "ForgotPassword"),

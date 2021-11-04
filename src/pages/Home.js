@@ -12,7 +12,10 @@ import {
   StyleSheet,
   Keyboard,
   ScrollView,
+  Dimensions,
+  ActivityIndicator,
   Dimensions
+
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Button, Input, Icon } from "react-native-elements";
@@ -109,6 +112,33 @@ const Home = ({ route, navigation }) => {
             region={region}
             onRegionChange={setRegion}
           >
+            <Marker
+              coordinate={{
+                latitude: region.latitude,
+                longitude: region.longitude,
+              }}
+              pinColor="red"
+            />
+            {job.activeCd === "Y" ? (
+              <>
+                <Marker
+                  coordinate={{
+                    latitude: job.pickup.latitude,
+                    longitude: job.pickup.longitude,
+                  }}
+                  pinColor="black"
+                ></Marker>
+                <Marker
+                  coordinate={{
+                    latitude: job.dropOff.latitude,
+                    longitude: job.dropOff.longitude,
+                  }}
+                  pinColor="green"
+                ></Marker>
+              </>
+            ) : (
+              React.Fragment )}
+
             {selfMarker ? (
               <Marker
                 coordinate={{
@@ -128,10 +158,11 @@ const Home = ({ route, navigation }) => {
               />
             ) : (
               <React.Fragment />
+
             )}
           </MapView>
         ) : (
-          <React.Fragment />
+          <ActivityIndicator color="black" size="large" />
         )}
       </View>
       <View style={{ paddingTop: 50 }}>
@@ -144,11 +175,25 @@ const Home = ({ route, navigation }) => {
             driverName={job.driverName}
             driverLocation={job.driverLocation}
             driverPhone={job.driverPhone}
+            time={job.time}
           />
         ) : (
           React.Fragment
         )}
       </View>
+      {job.activeCd === "Y" ? (
+        <View>
+          <Button
+            transparent
+            title="Edit Request"
+            titleStyle={{ fontSize: 15, fontWeight: "600" }}
+            onPress={() => navigation.navigate("EditJobRequest")}
+            disabled={job.accepted ? true : false}
+          />
+        </View>
+      ) : (
+        React.Fragment
+      )}
     </View>
   );
 };
