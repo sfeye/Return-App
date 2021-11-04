@@ -3,7 +3,7 @@ import firebase from "firebase";
 import { useDispatch, useSelector } from "react-redux";
 import {
   initializeUser,
-  updateUserLocation,
+  updateUserLocation
 } from "../store/actions/userActions";
 import { updateJob } from "../store/actions/jobActions";
 import {
@@ -14,6 +14,8 @@ import {
   ScrollView,
   Dimensions,
   ActivityIndicator,
+  Dimensions
+
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Button, Input, Icon } from "react-native-elements";
@@ -24,25 +26,26 @@ import JobStatus from "../components/JobStatus";
 const Home = ({ route, navigation }) => {
   // --------- Redux ----------- //
   const dispatch = useDispatch();
-  const userLocation = useSelector((state) => state.userReducer.location);
-  const job = useSelector((state) => state.jobReducer);
+  const userLocation = useSelector(state => state.userReducer.location);
+  const job = useSelector(state => state.jobReducer);
 
   // --------------------------- //
 
   // ------- Local State ------- //
   const [errorMsg, setErrorMsg] = useState(null);
   const [region, setRegion] = useState(null);
+  const [selfMarker, setSelfMarker] = useState(null);
+  const [driverMarker, setDriverMarker] = useState(null);
   // --------------------------- //
 
   useEffect(() => {
+    console.log(route.params.email);
     firebase
       .firestore()
       .collection("users")
       .where("email", "==", route.params.email)
-      .onSnapshot((snapshot) => {
-        snapshot.docs.map((doc) =>
-          dispatch(initializeUser(doc.id, doc.data()))
-        );
+      .onSnapshot(snapshot => {
+        snapshot.docs.map(doc => dispatch(initializeUser(doc.id, doc.data())));
       });
 
     firebase
@@ -50,8 +53,8 @@ const Home = ({ route, navigation }) => {
       .collection("jobs")
       .where("email", "==", route.params.email)
       .where("activeCd", "==", "Y")
-      .onSnapshot((snapshot) => {
-        snapshot.docs.map((doc) =>
+      .onSnapshot(snapshot => {
+        snapshot.docs.map(doc =>
           dispatch(
             updateJob(
               doc.data().accepted,
@@ -77,7 +80,11 @@ const Home = ({ route, navigation }) => {
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
         latitudeDelta: 0.01,
-        longitudeDelta: 0.01,
+        longitudeDelta: 0.01
+      });
+      setSelfMarker({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
       });
     })();
   }, []);
@@ -130,7 +137,28 @@ const Home = ({ route, navigation }) => {
                 ></Marker>
               </>
             ) : (
-              React.Fragment
+              React.Fragment )}
+
+            {selfMarker ? (
+              <Marker
+                coordinate={{
+                  latitude: selfMarker.latitude,
+                  longitude: selfMarker.longitude,
+                }}
+              />
+            ) : (
+              <React.Fragment />
+            )}
+            {driverMarker ? (
+              <Marker
+                coordinate={{
+                  latitude: driverMarker.latitude,
+                  longitude: driverMarker.longitude,
+                }}
+              />
+            ) : (
+              <React.Fragment />
+
             )}
           </MapView>
         ) : (

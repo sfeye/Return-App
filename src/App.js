@@ -58,11 +58,11 @@ export default function App() {
           title: title,
           headerTitleStyle: {
             fontSize: 15,
-            color: "white",
+            color: "white"
           },
           headerTintColor: "white",
           headerStyle: {
-            backgroundColor: "blue",
+            backgroundColor: "blue"
           },
           headerRight: () => (
             <TouchableOpacity
@@ -71,9 +71,28 @@ export default function App() {
             >
               <Ionicons name={"power"} size={20} color={"white"} />
             </TouchableOpacity>
-          ),
+          )
         }}
         initialParams={initialParams}
+      />
+    );
+  }
+
+  function AuthStackTemplate(name, component) {
+    return (
+      <AuthStack.Screen
+        name={name}
+        component={component}
+        options={{
+          headerTitleStyle: {
+            color: "white",
+            textAlign: "center",
+          },
+          headerTintColor: "white",
+          headerStyle: {
+            backgroundColor: "blue",
+          },
+        }}
       />
     );
   }
@@ -88,7 +107,7 @@ export default function App() {
               (name = "HomeStack"),
               (component = Home),
               (title = "Welcome tester"),
-              (initialParams = { email: "email" })
+              (initialParams = { email: authUser.email })
             )}
             {HomeStackTemplate(
               (name = "RequestScreen"),
@@ -120,48 +139,13 @@ export default function App() {
       ) : (
         <NavigationContainer>
           <AuthStack.Navigator>
-            <AuthStack.Screen
-              name="Login"
-              component={Login}
-              options={{
-                headerTitleStyle: {
-                  color: "white",
-                  textAlign: "center",
-                },
-                headerTintColor: "white",
-                headerStyle: {
-                  backgroundColor: "blue",
-                },
-              }}
-            />
-            <AuthStack.Screen
-              name="ForgotPassword"
-              component={ForgotPassword}
-              options={{
-                headerTitleStyle: {
-                  color: "white",
-                  textAlign: "center",
-                },
-                headerTintColor: "white",
-                headerStyle: {
-                  backgroundColor: "blue",
-                },
-              }}
-            />
-            <AuthStack.Screen
-              name="NewUser"
-              component={NewUser}
-              options={{
-                headerTitleStyle: {
-                  color: "white",
-                  textAlign: "center",
-                },
-                headerTintColor: "white",
-                headerStyle: {
-                  backgroundColor: "blue",
-                },
-              }}
-            />
+
+            {AuthStackTemplate((name = "Login"), (component = Login))}
+            {AuthStackTemplate(
+              (name = "ForgotPassword"),
+              (component = ForgotPassword)
+            )}
+            {AuthStackTemplate((name = "NewUser"), (component = NewUser))}
           </AuthStack.Navigator>
         </NavigationContainer>
       )}
