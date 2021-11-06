@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { resetJob } from "../store/actions/jobActions";
 import { Button } from "react-native-elements";
 import firebase from "firebase";
+import moment from "moment";
 
 const JobStatus = ({
   dropOff,
@@ -17,49 +18,6 @@ const JobStatus = ({
 }) => {
   const dispatch = useDispatch();
   const docId = useSelector((state) => state.jobReducer.id);
-
-  // Process date and time
-  // function processDate(datetime) {
-  //   var temp = new Date(datetime.seconds * 1000);
-  //   return (
-  //     temp.getMonth() + 1 + "/" + temp.getDate() + "/" + temp.getFullYear()
-  //   );
-  // }
-
-  // function processTime(datetime) {
-  //   var temp = new Date(datetime.seconds * 1000);
-  //   return (
-  //     processHour(temp.getHours()) +
-  //     ":" +
-  //     temp.getMinutes().toString().padEnd(2, "0") +
-  //     " " +
-  //     processAMPM(temp.getHours())
-  //   );
-  // }
-
-  // function processHour(hour) {
-  //   if (hour === "24") {
-  //     return "12";
-  //   } else if (hour < 13) {
-  //     return hour;
-  //   } else {
-  //     return hour - 12;
-  //   }
-  // }
-
-  // function processAMPM(hour) {
-  //   if (hour === 12) {
-  //     return "PM";
-  //   } else if (hour === 24) {
-  //     return "AM";
-  //   } else if (hour < 13) {
-  //     return "AM";
-  //   } else {
-  //     return "PM";
-  //   }
-  // }
-
-  //------------------------------
 
   const cancelJob = () => {
     firebase
@@ -83,7 +41,7 @@ const JobStatus = ({
           <View>
             <Text>Dropoff:{dropOff.address}</Text>
             <Text>Pickup: {pickup.address}</Text>
-            <Text>Time: {time.toString()}</Text>
+            <Text>Time: {moment(time).format("MMMM Do YYYY, h:mm:ss a")}</Text>
           </View>
         ) : (
           React.Fragment
