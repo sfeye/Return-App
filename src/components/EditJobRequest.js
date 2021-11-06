@@ -6,8 +6,7 @@ import firebase from "firebase";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { Button, Input, Icon } from "react-native-elements";
 import DateTimePicker from "@react-native-community/datetimepicker";
-
-const GOOGLE_PLACES_API_KEY = "AIzaSyC5s7Hadc3VByJRQedchWDTC__U-Z9G2-w";
+import { GOOGLE_PLACES_API_KEY } from "@env";
 
 const EditJobRequest = () => {
   const dropOffRef = useRef();
