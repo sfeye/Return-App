@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
+import { StyleSheet, Text, ScrollView, ActivityIndicator } from "react-native";
 import PreviousJobCard from "../components/PreviousJobCard";
 import { useDispatch, useSelector } from "react-redux";
 import firebase from "firebase";
@@ -25,7 +25,7 @@ const Previous = () => {
   }, []);
 
   return (
-    <View>
+    <ScrollView>
       {pjob ? (
         pjob.map(({ id, job }) => (
           <PreviousJobCard
@@ -42,7 +42,7 @@ const Previous = () => {
       ) : (
         <ActivityIndicator color="black" size="large" />
       )}
-    </View>
+    </ScrollView>
   );
 };
 
