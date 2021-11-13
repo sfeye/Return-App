@@ -59,6 +59,7 @@ export default function App() {
           name="HomeStack"
           component={Home}
           options={{
+            title: "Home",
             headerMode: "none",
           }}
           initialParams={{ email: authUser.email }}
