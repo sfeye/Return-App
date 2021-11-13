@@ -49,8 +49,8 @@ const JobStatus = ({
 
         {accepted ? (
           <View>
-            <Text>Accepted: {accepted}</Text>
-            <Text>Completed: {completed}</Text>
+            <Text>Accepted: {accepted ? "Yes" : "No"}</Text>
+            <Text>Completed: {completed ? "Yes" : "No"}</Text>
             <Text>Driver Name: {driverName}</Text>
             <Text>Driver Location: {driverLocation}</Text>
             <Text>Driver Phone: {driverPhone}</Text>
@@ -65,6 +65,7 @@ const JobStatus = ({
           title="Cancel Request"
           titleStyle={{ fontSize: 15, fontWeight: "600" }}
           onPress={() => cancelJob()}
+          disabled={accepted ? true : false}
         />
       </View>
       {/* <View>
