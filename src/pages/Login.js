@@ -48,6 +48,7 @@ const Login = ({ navigation }) => {
         type="password"
         value={password}
         onChangeText={setPassword}
+        secureTextEntry={true}
       />
 
       <TouchableOpacity
