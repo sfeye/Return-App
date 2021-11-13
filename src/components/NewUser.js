@@ -90,6 +90,7 @@ const NewUser = ({ navigation }) => {
         type="password"
         value={password}
         onChangeText={setPassword}
+        secureTextEntry={true}
       />
 
       <TextInput
