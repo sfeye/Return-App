@@ -17,10 +17,12 @@ import RequestScreen from "./components/RequestScreen";
 import ForgotPassword from "./components/ForgotPassword";
 import NewUser from "./components/NewUser";
 import EditJobRequest from "./components/EditJobRequest";
+import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 
 export default function App() {
   // ------- Local State ------- //
   const [authUser, setUser] = useState(null);
+  //var currentRoute = useRoute();
   // --------------------------- //
 
   // --- Initialize Firebase --- //
@@ -45,24 +47,78 @@ export default function App() {
 
   // ------ Create Stacks ------ //
   const AuthStack = createStackNavigator();
-  const HomeStack = createDrawerNavigator();
+  const HomeDrawer = createDrawerNavigator();
+  const HomeStack = createStackNavigator();
+  // --------------------------- //
+
+  // --- Home Stack  Screens --- //
+  function HomeStackScreens() {
+    return (
+      <HomeStack.Navigator>
+        <HomeStack.Screen
+          name="HomeStack"
+          component={Home}
+          options={{
+            headerMode: "none",
+          }}
+          initialParams={{ email: authUser.email }}
+        ></HomeStack.Screen>
+        <HomeStack.Screen
+          name="EditJobRequest"
+          component={EditJobRequest}
+          options={{
+            title: "Update Request",
+            headerTitleStyle: {
+              fontSize: 15,
+              color: "white",
+            },
+            headerTintColor: "white",
+            headerStyle: {
+              backgroundColor: "blue",
+            },
+          }}
+        ></HomeStack.Screen>
+        <HomeStack.Screen
+          name="RequestScreen"
+          component={RequestScreen}
+          options={{
+            title: "Request a Pickup",
+            headerTitleStyle: {
+              fontSize: 15,
+              color: "white",
+            },
+            headerTintColor: "white",
+            headerStyle: {
+              backgroundColor: "blue",
+            },
+          }}
+        ></HomeStack.Screen>
+      </HomeStack.Navigator>
+    );
+  }
   // --------------------------- //
 
   // -------- Templates -------- //
-  function HomeStackTemplate(name, component, title, initialParams) {
+  function HomeDrawerTemplate(name, component, title, initialParams) {
     return (
-      <HomeStack.Screen
+      <HomeDrawer.Screen
         name={name}
         component={component}
-        options={{
+        options={({ route }) => ({
           title: title,
           headerTitleStyle: {
             fontSize: 15,
-            color: "white"
+            color: "white",
           },
+          headerShown:
+            getFocusedRouteNameFromRoute(route) === "RequestScreen" ||
+            getFocusedRouteNameFromRoute(route) === "EditJobRequest"
+              ? false
+              : true,
+
           headerTintColor: "white",
           headerStyle: {
-            backgroundColor: "blue"
+            backgroundColor: "blue",
           },
           headerRight: () => (
             <TouchableOpacity
@@ -71,8 +127,8 @@ export default function App() {
             >
               <Ionicons name={"power"} size={20} color={"white"} />
             </TouchableOpacity>
-          )
-        }}
+          ),
+        })}
         initialParams={initialParams}
       />
     );
@@ -102,44 +158,31 @@ export default function App() {
     <Provider store={Store}>
       {authUser ? (
         <NavigationContainer>
-          <HomeStack.Navigator>
-            {HomeStackTemplate(
-              (name = "HomeStack"),
-              (component = Home),
-              (title = "Welcome tester"),
-              (initialParams = { email: authUser.email })
+          <HomeDrawer.Navigator>
+            {HomeDrawerTemplate(
+              (name = "Home"),
+              (component = HomeStackScreens)
             )}
-            {HomeStackTemplate(
-              (name = "RequestScreen"),
-              (component = RequestScreen),
-              (title = "Request a pickup")
-            )}
-            {HomeStackTemplate(
+            {HomeDrawerTemplate(
               (name = "SettingsScreen"),
               (component = Settings),
               (title = "Profile Settings")
             )}
-            {HomeStackTemplate(
+            {HomeDrawerTemplate(
               (name = "WalletScreen"),
               (component = Wallet),
               (title = "Your Payments")
             )}
-            {HomeStackTemplate(
+            {HomeDrawerTemplate(
               (name = "PreviousScreen"),
               (component = Previous),
               (title = "Previous Jobs")
             )}
-            {HomeStackTemplate(
-              (name = "EditJobRequest"),
-              (component = EditJobRequest),
-              (title = "Update Request")
-            )}
-          </HomeStack.Navigator>
+          </HomeDrawer.Navigator>
         </NavigationContainer>
       ) : (
         <NavigationContainer>
           <AuthStack.Navigator>
-
             {AuthStackTemplate((name = "Login"), (component = Login))}
             {AuthStackTemplate(
               (name = "ForgotPassword"),

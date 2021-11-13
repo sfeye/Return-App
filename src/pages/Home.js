@@ -102,7 +102,7 @@ const Home = ({ route, navigation }) => {
             />
           }
           title="New Request ? "
-          onPress={() => navigation.navigate("RequestScreen")}
+          onPress={() => navigation.push("RequestScreen")}
         />
       </View>
       <View>
@@ -188,7 +188,7 @@ const Home = ({ route, navigation }) => {
             title="Edit Request"
             titleStyle={{ fontSize: 15, fontWeight: "600" }}
             onPress={() => navigation.navigate("EditJobRequest")}
-            disabled={job.accepted ? true : false}
+            disabled={job.accepted === true ? true : false}
           />
         </View>
       ) : (

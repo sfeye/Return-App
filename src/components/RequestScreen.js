@@ -18,7 +18,7 @@ import firebase from "firebase";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { GOOGLE_PLACES_API_KEY } from "@env";
 
-const RequestScreen = (route, navigation) => {
+const RequestScreen = ({ navigation }) => {
   const dispatch = useDispatch();
 
   const [fromLocation, setFromLocation] = useState(null);
@@ -109,6 +109,7 @@ const RequestScreen = (route, navigation) => {
           )
         );
         resetStateVars();
+        navigation.pop();
       })
       .catch((error) => {
         alert(error);

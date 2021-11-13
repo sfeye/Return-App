@@ -16,16 +16,24 @@ const EditJobRequest = () => {
   const job = useSelector((state) => state.jobReducer);
 
   const [requestType, setRequestType] = useState(job.task);
-  const [fromLocation, setFromLocation] = useState({
-    latitude: job.pickup.latitude,
-    longitude: job.pickup.longitude,
-    address: job.pickup.address,
-  });
-  const [toLocation, setToLocation] = useState({
-    latitude: job.dropOff.latitude,
-    longitude: job.dropOff.latitude,
-    address: job.dropOff.address,
-  });
+  const [fromLocation, setFromLocation] = useState(
+    job.pickup.latitude
+      ? {
+          latitude: job.pickup.latitude,
+          longitude: job.pickup.longitude,
+          address: job.pickup.address,
+        }
+      : null
+  );
+  const [toLocation, setToLocation] = useState(
+    job.dropOff.latitude
+      ? {
+          latitude: job.dropOff.latitude,
+          longitude: job.dropOff.latitude,
+          address: job.dropOff.address,
+        }
+      : null
+  );
   const [editDate, setEditDate] = useState(new Date(job.time));
   const [editTime, setEditTime] = useState(new Date(job.time));
   const [show, setShow] = useState(false);
@@ -256,7 +264,7 @@ const EditJobRequest = () => {
           title="Update"
           raised
           onPress={() => updateJobRequest()}
-          disabled={job.accepted == true ? true : false}
+          disabled={job.accepted}
         />
       </View>
     </ScrollView>
