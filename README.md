@@ -20,7 +20,7 @@ Return App - Consumer
 | ------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | LEVI    |     |     |     |     |     |     |     |     | ✅   | ✅  |  ✅   |With #10 we should remove the green and add "Bone" |
 | MOMODOU |     |     |     |     |     |     |     |     |     |     |     | |
-| SAM     |  ✅   |     |     |     |     |     |     | ✅    |✅     |     |     | |
+| SAM     |     |     |     |   ✅  |     |     |     | ✅    |✅     |     |     | |
 
 ## Levi
 
