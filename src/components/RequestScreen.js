@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   Text,
@@ -31,6 +31,23 @@ const RequestScreen = ({ navigation }) => {
   const [mode, setMode] = useState("date");
 
   const user = useSelector((state) => state.userReducer.user);
+
+  const pickupRef = useRef();
+  const dropOffRef = useRef();
+
+  const [validatePickup, setValidatePickup] = useState("");
+  const [validateDropOff, setValidateDropOff] = useState("");
+
+  function isDisabled() {
+    if (
+      toLocation?.latitude === undefined ||
+      fromLocation?.latitude === undefined
+    ) {
+      return true;
+    }
+
+    return false;
+  }
 
   const resetStateVars = () => {
     setFromLocation(null);
@@ -122,12 +139,18 @@ const RequestScreen = ({ navigation }) => {
         <GooglePlacesAutocomplete
           placeholder="From"
           minLength={2}
+          ref={pickupRef}
           autoFocus={true}
           returnKeyType={"search"}
           keyboardAppearance={"light"}
           listViewDisplayed={"auto"}
           fetchDetails={true}
           renderDescription={(row) => row.description}
+          textInputProps={{
+            onChangeText: (text) => {
+              setFromLocation(text);
+            },
+          }}
           onPress={(data, details) => {
             // 'details' is provided when fetchDetails = true
             console.log(data);
@@ -185,12 +208,18 @@ const RequestScreen = ({ navigation }) => {
         <GooglePlacesAutocomplete
           placeholder="To"
           minLength={2}
+          ref={dropOffRef}
           autoFocus={false}
           returnKeyType={"search"}
           keyboardAppearance={"light"}
           listViewDisplayed={"auto"}
           fetchDetails={true}
           renderDescription={(row) => row.description}
+          textInputProps={{
+            onChangeText: (text) => {
+              setToLocation(text);
+            },
+          }}
           onPress={(data, details = null) => {
             // 'details' is provided when fetchDetails = true
             console.log(data, details);
@@ -269,12 +298,24 @@ const RequestScreen = ({ navigation }) => {
         </View>
       </View>
       <View>
-        <Button title="Submit" raised onPress={() => createNewJobRequest()} />
+        <Button
+          title="Submit"
+          raised
+          onPress={() => createNewJobRequest()}
+          disabled={isDisabled()}
+        />
       </View>
     </ScrollView>
   );
 };
 
+// const validateLocation = (dropOff, pickup) => {
+//   if (dropOff === "" || pickup === "") {
+//     return true;
+//   } else {
+//     return false;
+//   }
+// };
 const styles = StyleSheet.create({
   container: {
     flex: 1,

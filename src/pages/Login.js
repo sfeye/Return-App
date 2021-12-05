@@ -5,8 +5,9 @@ import {
   TouchableOpacity,
   TextInput,
   StyleSheet,
-  Alert
+  Alert,
 } from "react-native";
+import { Input } from "react-native-elements";
 import firebase from "firebase";
 
 const Login = ({ navigation }) => {
@@ -17,12 +18,12 @@ const Login = ({ navigation }) => {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then(res => {
+      .then((res) => {
         // Signed in
         console.log(res);
         // ...
       })
-      .catch(error => {
+      .catch((error) => {
         alert(error);
       });
   };
@@ -73,29 +74,29 @@ export default Login;
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 23
+    paddingTop: 23,
   },
   input: {
     margin: 15,
     height: 50,
     borderColor: "#0000FF",
-    borderWidth: 1
+    borderWidth: 1,
   },
   submitButton: {
     backgroundColor: "#0000FF",
     padding: 10,
     margin: 15,
-    height: 50
+    height: 50,
   },
   submitButtonText: {
-    color: "white"
+    color: "white",
   },
   forgotPassword: {
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   newUser: {
     justifyContent: "center",
-    alignItems: "center"
-  }
+    alignItems: "center",
+  },
 });
