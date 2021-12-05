@@ -4,7 +4,7 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  StyleSheet
+  StyleSheet,
 } from "react-native";
 import firebase from "firebase";
 
@@ -16,7 +16,7 @@ const ForgotPassword = () => {
       .auth()
       .sendPasswordResetEmail(email)
       .then()
-      .catch(error => {
+      .catch((error) => {
         alert(error);
       });
   };
@@ -45,17 +45,17 @@ const styles = StyleSheet.create({
     margin: 15,
     height: 50,
     borderColor: "#0000FF",
-    borderWidth: 1
+    borderWidth: 1,
   },
   submitButton: {
     backgroundColor: "#0000FF",
     padding: 10,
     margin: 15,
-    height: 50
+    height: 50,
   },
   submitButtonText: {
-    color: "white"
-  }
+    color: "white",
+  },
 });
 
 export default ForgotPassword;
